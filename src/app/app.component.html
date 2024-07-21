@@ -1,0 +1,76 @@
+<div class="container">
+  <div class="row pt-3">
+    <div class="col-6">
+      <h4>Weather App</h4>
+    </div>
+    <div class="col-6 text-end">
+      <button class="btn btn-outline-success" (click)="onAdd()">Add New City</button>
+    </div>
+  </div>
+  @if (weatherList.length !== 0) {
+  <div class="row">
+    <div class="list-group mt-5 mb-5">
+      @for (item of weatherList; track $index) {
+      <a href="#" class="list-group-item list-group-item-action flex-column align-items-start" (click)="onDetail(item)">
+        <div class="d-flex w-100 justify-content-between">
+          <p>{{item.name}}</p>
+          <img src="https://openweathermap.org/img/w/{{item.icon}}.png" alt="">
+          <p>{{item.temp}}</p>
+          {{item.description}}
+          <small>
+            <button class="btn btn-sm btn-primary" style="margin-right:5pt" (click)="onDetail(item)">Detail</button>
+            <button class="btn btn-sm btn-danger" (click)="onDelete(item)">Delete</button>
+          </small>
+        </div>
+      </a>
+      }
+    </div>
+  </div>
+  } @else {
+  <div class="row">
+    <div class="col-12 p-4 text-center">
+      <p>No Record Found. Create New Record</p>
+    </div>
+  </div>
+  }
+
+</div>
+
+
+<div class="modal" id="myModal" #myModal>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">
+          @if (modalStatus != 'show') { Add City Name } @else { Detail }</h4>
+        <button type="button" class="btn-close" (click)="closeModel()"></button>
+      </div>
+      <div class="modal-body">
+        @if (modalStatus != 'show') {
+        <div class="row">
+          <div class="col-8">
+            <input type="text" [(ngModel)]="weatherObj.name" class="form-control" placeholder="City Name">
+          </div>
+        </div>
+        } @else {
+        <div class="center">
+          <img src="https://openweathermap.org/img/w/{{weatherObj.icon}}.png" alt="">
+          <strong>{{weatherObj.name}}</strong>
+          <p>Temperature {{weatherObj.temp}}</p>
+          <p>Humidity {{weatherObj.humidity}}</p>
+          <p>Pressure {{weatherObj.pressure}}</p>
+
+          <p class="mt-5"><strong>{{weatherObj.status}}</strong></p>
+        </div>
+        }
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="closeModel()">Close</button>
+        @if (weatherObj.id ==0) {
+        <button type="button" class="btn btn-primary" (click)="saveWeather()">Save City</button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
